@@ -64,6 +64,13 @@ function handleError(
     documentation_url?: string;
   },
 ): ServiceError {
+  // Without this the caller only ever sees "unknown error", which hides the
+  // most common cause: an invalid or missing token answering "Bad credentials".
+  console.error(
+    "GitHub response could not be interpreted:",
+    JSON.stringify(responseData, null, 2),
+  );
+
   let isRateLimitExceeded = false;
   const arrayErrors = responseData?.errors || [];
 
